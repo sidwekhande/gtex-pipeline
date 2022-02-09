@@ -33,5 +33,7 @@ workflows:
   - name: GetString
     subclass: WDL
     primaryDescriptorPath: /utils/GetString.wdl
-
+  - name: KallistoIndexStep1
+    subclass: WDL
+    primaryDescriptorPath: /utils/kallisto_index_step1.wdl
 
