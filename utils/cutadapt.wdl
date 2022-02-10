@@ -5,7 +5,7 @@ workflow Cutadapt{
     String adapter_sequence1
     String adapter_sequence2
     String posttrim_fastq1
-    String posttrim_fastq1
+    String posttrim_fastq2
     File pretrim_fastq1
     File pretrim_fastq2
   }
@@ -26,7 +26,7 @@ task cutadapt {
     String adapter_sequence1
     String adapter_sequence2
     String posttrim_fastq1
-    String posttrim_fastq1
+    String posttrim_fastq2
     File pretrim_fastq1
     File pretrim_fastq2
   }
