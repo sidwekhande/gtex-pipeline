@@ -36,4 +36,6 @@ workflows:
   - name: KallistoIndexStep1
     subclass: WDL
     primaryDescriptorPath: /utils/kallisto_index_step1.wdl
-
+  - name: Cutadapt
+    subclass: WDL
+    primaryDescriptorPath: /utils/cutadapt.wdl
