@@ -48,6 +48,6 @@ task cutadapt {
        docker: "mskaccess/trim_galore:0.6.3"
        memory: "8 GB"
        cpu: 4
-       disks: "local-disk 200 SSD"
+       disks: "local-disk 200 HDD"
   }
 }
