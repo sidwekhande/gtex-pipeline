@@ -29,6 +29,6 @@ task Kallisto_index {
        docker: "jjkrc/kallisto:0.46.1"
        memory: "8 GB"
        cpu: 4
-       disks: "local-disk 200 SSD"
+       disks: "local-disk 200 HDD"
   }
 }
