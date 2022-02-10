@@ -12,11 +12,11 @@ workflow Cutadapt{
   
   call cutadapt{
     input:
-    adapter_sequence1 = adapter_sequence1
-    adapter_sequence2 = adapter_sequence2
-    posttrim_fastq1 = posttrim_fastq1
-    posttrim_fastq2 = posttrim_fastq2
-    pretrim_fastq1 = pretrim_fastq1
+    adapter_sequence1 = adapter_sequence1,
+    adapter_sequence2 = adapter_sequence2,
+    posttrim_fastq1 = posttrim_fastq1,
+    posttrim_fastq2 = posttrim_fastq2,
+    pretrim_fastq1 = pretrim_fastq1,
     pretrim_fastq2 = pretrim_fastq2
   }
 }
