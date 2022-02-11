@@ -31,8 +31,6 @@ workflow Cutadapt{
     File posttrim2 = cutadapt.posttrim2
   }
   
-  
-  
 }
 
 task cutadapt {
