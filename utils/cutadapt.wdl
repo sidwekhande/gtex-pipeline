@@ -20,12 +20,6 @@ workflow Cutadapt{
     pretrim_fastq2 = pretrim_fastq2,
     memoryMaybe = memoryMaybe
   }
-  
- output{
-    File posttrim1 = cutadapt.posttrim1
-    File posttrim2 = cutadapt.posttrim2
-  }
-  
 }
 
 task cutadapt {
