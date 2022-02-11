@@ -11,6 +11,11 @@ workflow Cutadapt{
     Int? memoryMaybe
   }
   
+  output{
+    File posttrim1 = cutadapt.posttrim1
+    File posttrim2 = cutadapt.posttrim2
+   }
+  
   call cutadapt{
     input:
     adapter_sequence1 = adapter_sequence1,
@@ -20,6 +25,9 @@ workflow Cutadapt{
     pretrim_fastq2 = pretrim_fastq2,
     memoryMaybe = memoryMaybe
   }
+ 
+ }
+ 
 }
 
 task cutadapt {
