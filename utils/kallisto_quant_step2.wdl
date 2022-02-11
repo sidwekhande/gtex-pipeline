@@ -11,6 +11,14 @@ workflow Kallisto_quant_step2{
     Int? memoryMaybe
   }
   
+  output {
+  
+    File Kallisto_quant.info
+    File Kallisto_quant.tsv
+    File Kallisto_quant.h5
+
+  }
+  
   call Kallisto_quant{
     input:
     TranscriptIdx = TranscriptIdx,
