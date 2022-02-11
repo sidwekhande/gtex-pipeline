@@ -52,7 +52,7 @@ task cutadapt {
         
     cutadapt -a ~{adapter_sequence1} -A ~{adapter_sequence2} \
     -o ~{sample_id}.trimmed.R1.fastq.gz -p ~{sample_id}.trimmed.R2.fastq.gz \
-    ~{pretrim_fastq1} ~{pretrim_fastq2} \
+    ~{pretrim_fastq1} ~{pretrim_fastq2} -j 0 \
     -q 20
   >>>
   
