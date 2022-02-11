@@ -22,7 +22,7 @@ workflow Kallisto_quant_step2{
 
   }
   
-    output {
+   output {
     File info = Kallisto_quant.info
     File tsv = Kallisto_quant.tsv
     File h5 = Kallisto_quant.h5
