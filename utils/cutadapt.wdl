@@ -17,6 +17,14 @@ workflow Cutadapt{
     pretrim_fastq1 = pretrim_fastq1,
     pretrim_fastq2 = pretrim_fastq2
   }
+  
+ output{
+    File posttrim1 = cutadapt.posttrim1
+    File posttrim2 = cutadapt.posttrim2
+  }
+  
+  
+  
 }
 
 task cutadapt {
