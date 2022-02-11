@@ -11,14 +11,6 @@ workflow Kallisto_quant_step2{
     Int? memoryMaybe
   }
   
-  output {
-  
-    File Kallisto_quant.info
-    File Kallisto_quant.tsv
-    File Kallisto_quant.h5
-
-  }
-  
   call Kallisto_quant{
     input:
     TranscriptIdx = TranscriptIdx,
@@ -40,6 +32,13 @@ task Kallisto_quant {
     String BootstrapIter
     
     Int? memoryMaybe
+  }
+  
+  output{
+  
+    File info = Kallisto_quant.info
+    File tsv = Kallisto_quant.tsv
+    File h5 = Kallisto_quant.h5
   }
   
   Int memoryDefault=1
