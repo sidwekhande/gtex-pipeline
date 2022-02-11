@@ -63,7 +63,7 @@ task cutadapt {
   runtime {
        docker: "mskaccess/trim_galore:0.6.3"
        memory: memoryRam + " GB"
-       cpu: 4
+       cpu: 20
        disks: "local-disk " + disk_size + " HDD"
   }
 }
