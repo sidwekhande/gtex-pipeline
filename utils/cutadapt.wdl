@@ -11,10 +11,11 @@ workflow Cutadapt{
     Int? memoryMaybe
   }
   
-  output{
+  output {
     File posttrim1 = cutadapt.posttrim1
     File posttrim2 = cutadapt.posttrim2
-   }
+  }
+  
   
   call cutadapt{
     input:
