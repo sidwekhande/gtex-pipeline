@@ -16,8 +16,8 @@ workflow Kallisto_quant_step2{
     TranscriptIdx = TranscriptIdx,
     read1 = read1,
     read2 = read2,
-    name = sampleID
-    String BootstrapIter
+    name = sampleID,
+    BootstrapIter = BootstrapIter,
     memoryMaybe = memoryMaybe
 
   }
@@ -37,7 +37,7 @@ task Kallisto_quant {
   Int memoryDefault=1
   Int memoryJava=select_first([memoryMaybe,memoryDefault])
   Int memoryRam=memoryJava+2
-  Int disk_size = 10 + ceil(size([pretrim_fastq1], "GB")) + ceil(size([pretrim_fastq1], "GB"))
+  Int disk_size = 10 + ceil(size([read1], "GB")) + ceil(size([read2], "GB"))
 
   command <<<
     wget https://github.com/broadinstitute/palantir-workflows/raw/main/Scripts/monitoring/cromwell_monitoring_script.sh 
