@@ -36,8 +36,6 @@ task cutadapt {
     File pretrim_fastq1
     File pretrim_fastq2
     
-    Int? memoryMaybe
-    
   }
   
   Int memoryDefault=1
