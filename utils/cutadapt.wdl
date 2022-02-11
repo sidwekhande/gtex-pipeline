@@ -11,20 +11,19 @@ workflow Cutadapt{
     Int? memoryMaybe
   }
   
-  
   Int memoryDefault=1
   Int memoryJava=select_first([memoryMaybe,memoryDefault])
   Int memoryRam=memoryJava+2
-  Int disk_size = 10 + ceil(size([pretrim_fastq1], "GB"))*2
+  Int disk_size = 10 + ceil(size([pretrim_fastq1], "GB")) + ceil(size([pretrim_fastq1], "GB"))
 
-  
   call cutadapt{
     input:
     adapter_sequence1 = adapter_sequence1,
     adapter_sequence2 = adapter_sequence2,
     sample_id = sample_id,
     pretrim_fastq1 = pretrim_fastq1,
-    pretrim_fastq2 = pretrim_fastq2
+    pretrim_fastq2 = pretrim_fastq2,
+
   }
   
  output{
