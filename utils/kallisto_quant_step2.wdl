@@ -21,6 +21,12 @@ workflow Kallisto_quant_step2{
     memoryMaybe = memoryMaybe
 
   }
+  
+    output {
+    File info = Kallisto_quant.info
+    File tsv = Kallisto_quant.tsv
+    File h5 = Kallisto_quant.h5
+  }
 }
 
 task Kallisto_quant {
@@ -33,13 +39,7 @@ task Kallisto_quant {
     
     Int? memoryMaybe
   }
-  
-  output{
-  
-    File info = Kallisto_quant.info
-    File tsv = Kallisto_quant.tsv
-    File h5 = Kallisto_quant.h5
-  }
+
   
   Int memoryDefault=1
   Int memoryJava=select_first([memoryMaybe,memoryDefault])
