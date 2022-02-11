@@ -39,3 +39,6 @@ workflows:
   - name: Cutadapt
     subclass: WDL
     primaryDescriptorPath: /utils/cutadapt.wdl
+  - name: KallistoQuant
+    subclass: WDL
+    primaryDescriptorPath: /utils/kallisto_quant_step2.wdl
