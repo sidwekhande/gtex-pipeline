@@ -17,8 +17,8 @@ workflow Cutadapt{
     adapter_sequence2 = adapter_sequence2,
     sample_id = sample_id,
     pretrim_fastq1 = pretrim_fastq1,
-    pretrim_fastq2 = pretrim_fastq2
-
+    pretrim_fastq2 = pretrim_fastq2,
+    memoryMaybe = memoryMaybe
   }
   
  output{
@@ -36,6 +36,7 @@ task cutadapt {
     File pretrim_fastq1
     File pretrim_fastq2
     
+    Int? memoryMaybe
   }
   
   Int memoryDefault=1
