@@ -37,12 +37,14 @@ task cutadapt {
     File pretrim_fastq2
     
     Int? memoryMaybe
+    
   }
   
   Int memoryDefault=1
   Int memoryJava=select_first([memoryMaybe,memoryDefault])
   Int memoryRam=memoryJava+2
   Int disk_size = 10 + ceil(size([pretrim_fastq1], "GB")) + ceil(size([pretrim_fastq1], "GB"))
+  
 
   command <<<
     
@@ -63,7 +65,7 @@ task cutadapt {
   runtime {
        docker: "mskaccess/trim_galore:0.6.3"
        memory: memoryRam + " GB"
-       cpu: if threads > 5 then 5 else threads
+       cpu: 4
        disks: "local-disk " + disk_size + " HDD"
   }
 }
