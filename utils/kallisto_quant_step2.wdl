@@ -2,37 +2,59 @@ version 1.0
 
 workflow Kallisto_quant_step2{
   input {
-    File reference
-    String name
+    File TranscriptIdx
+    File read1
+    File read2
+    String sampleID
+    String BootstrapIter
+    
+    Int? memoryMaybe
   }
   
   call Kallisto_quant{
     input:
-    reference = reference,
-    name=name
+    TranscriptIdx = TranscriptIdx,
+    read1 = read1,
+    read2 = read2,
+    name = sampleID
+    String BootstrapIter
+    memoryMaybe = memoryMaybe
+
   }
 }
 
 task Kallisto_quant {
   input { 
-    File reference
+    File TranscriptIdx
+    File read1
+    File read2
     String name
+    String BootstrapIter
+    
+    Int? memoryMaybe
   }
+  
+  Int memoryDefault=1
+  Int memoryJava=select_first([memoryMaybe,memoryDefault])
+  Int memoryRam=memoryJava+2
+  Int disk_size = 10 + ceil(size([pretrim_fastq1], "GB")) + ceil(size([pretrim_fastq1], "GB"))
 
   command <<<
     wget https://github.com/broadinstitute/palantir-workflows/raw/main/Scripts/monitoring/cromwell_monitoring_script.sh 
     chmod a+x cromwell_monitoring_script.sh 
     ./cromwell_monitoring_script.sh &
     
-    kallisto index -i ~{name}	~{reference}  
+    kallisto quant -i ~{TranscriptIdx} -o ~{name} -b ~{BootstrapIter} ~{read1} ~{read2} 
   >>>
   output{
-    File index = name
+    File info = name + ".run_info.json"
+    File tsv = name + ".abundance.tsv"
+    File h5 = name + "abundance.h5"
   }
   runtime {
        docker: "jjkrc/kallisto:0.46.1"
-       memory: "8 GB"
+       memory: memoryRam + " GB"
        cpu: 4
-       disks: "local-disk 200 HDD"
+       disks: "local-disk " + disk_size + " HDD"
   }
 }
