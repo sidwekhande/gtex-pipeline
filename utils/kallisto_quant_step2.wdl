@@ -53,17 +53,17 @@ task Kallisto_quant {
     chmod a+x cromwell_monitoring_script.sh 
     ./cromwell_monitoring_script.sh &
     
-    kallisto quant -i ~{TranscriptIdx} -o ~{name} -b ~{BootstrapIter} ~{read1} ~{read2} 
+    kallisto quant -i ~{TranscriptIdx} -o ~{name} -b ~{BootstrapIter} ~{read1} ~{read2} -t 10
   >>>
   output{
-    File info = name + ".run_info.json"
-    File tsv = name + ".abundance.tsv"
-    File h5 = name + "abundance.h5"
+    File info = name + "/run_info.json"
+    File tsv = name + "/abundance.tsv"
+    File h5 = name + "/abundance.h5"
   }
   runtime {
        docker: "jjkrc/kallisto:0.46.1"
        memory: memoryRam + " GB"
-       cpu: 4
+       cpu: 10
        disks: "local-disk " + disk_size + " HDD"
   }
 }
