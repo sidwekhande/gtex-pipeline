@@ -44,7 +44,7 @@ task Kallisto_quant {
   Int memoryDefault=1
   Int memoryJava=select_first([memoryMaybe,memoryDefault])
   Int memoryRam=memoryJava+2
-  Int disk_size = 10 + ceil(size([read1], "GB")) + ceil(size([read2], "GB"))
+  Int disk_size = 10 + ceil(size([read1], "GB")) + ceil(size([read2], "GB")) + ceil(size([TranscriptIdx], "GB"))
 
   command <<<
     wget https://github.com/broadinstitute/palantir-workflows/raw/main/Scripts/monitoring/cromwell_monitoring_script.sh 
