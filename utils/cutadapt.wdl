@@ -46,6 +46,8 @@ task cutadapt {
 
   command <<<
     
+    set -xeuo pipefail 
+    
     wget https://github.com/broadinstitute/palantir-workflows/raw/main/Scripts/monitoring/cromwell_monitoring_script.sh 
     chmod a+x cromwell_monitoring_script.sh 
     ./cromwell_monitoring_script.sh &
