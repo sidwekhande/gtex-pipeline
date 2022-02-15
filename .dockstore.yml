@@ -27,14 +27,27 @@ workflows:
   - name: ClusterJunctions
     subclass: WDL
     primaryDescriptorPath: /qtl/leafcutter/leafcutter_cluster.wdl
-  - name: CreateParticipantSampleSets
+  - name: CreateSampleParticipantMap
     subclass: WDL
-    primaryDescriptorPath: /utils/CreateParticipantSampleSets.wdl
+    primaryDescriptorPath: /utils/CreateSampleParticipantMap.wdl
   - name: GetPEERFactors
     subclass: WDL
     primaryDescriptorPath: /qtl/qtl_peer_factors.wdl
   - name: GetString
     subclass: WDL
     primaryDescriptorPath: /utils/GetString.wdl
+  - name: GetASECount
+    subclass: WDL
+    primaryDescriptorPath: /qtl/ase_gatk_readcounter.wdl
+  - name: MarkDupsAndCountReads
+    subclass: WDL
+    primaryDescriptorPath: /rnaseq/aligned_rnaseq_bam_to_genecounts.wdl
+  - name: CombineRNASeqc2Files
+    subclass: WDL
+    primaryDescriptorPath: /rnaseq/rnaseqc2_aggregate.wdl
+  - name: PrepareExpressionData
+    subclass: WDL
+    primaryDescriptorPath: /qtl/eqtl_prepare_expression.wdl
+
 
 
