@@ -29,26 +29,17 @@ task ConvertPlinkToVcf {
 
 		if [ "${lines}" -eq "1" ]; then
 			bim_bash=~{bim}
-			plink --bfile "${bim_base}" --recode vcf --out "~{outbase}"
+			plink --bfile "${bim_base}" --recode vcf-iid --out "~{outbase}"
 		else
 			echo "Error, found too many basenames in the input: $lines" 
 			exit 1
 		fi
 
-		# remove lines that start with '##contig=<ID=' and for the remaining lines that
-		# to not start with '#', replace 23 with X and add 'chr' to the begining of the line.
-		grep -v '^##contig=<ID=' "~{outbase}".vcf | \
-			sed  '/#/!{s/^23\t/X\t/; s/^/chr/}'  | \
-			bcftools view --no-update  -v snps -e 'REF=="-"||ALT=="-" || REF=="."||ALT=="."'  \
-			-Oz -o "~{outbase}".snps.vcf.gz 
-
-		tabix "~{outbase}".snps.vcf.gz 
 	>>>
-
 	output {
-		File vcf="~{outbase}.snps.vcf.gz"
-		File vcf_index="~{outbase}.snps.vcf.gz.tbi"
+		File vcf="~{outbase}.vcf"
 	}
+
 
 	runtime {
 			docker: "dnastack/plink:1.9"
@@ -59,6 +50,52 @@ task ConvertPlinkToVcf {
 	}
 }
 
+
+task RenameChrXAndSubsetToSNPs {
+
+	input {
+		File vcf_in
+		File ref_index
+	}
+	String outbase=basename(vcf_in, '.vcf')
+	
+	command <<<
+		set -exuo pipefail 
+
+		mkdir temp
+		# remove lines that start with '##contig=<ID=' and for the remaining lines that
+		# to not start with '#', replace 23 with X and add 'chr' to the begining of the line.
+		grep -v '^##contig=<ID=' "~{vcf_in}" | \
+			sed  '/#/!{s/^23\t/X\t/; s/^/chr/}'  > raw.vcf
+		rm ~{vcf_in}
+
+		bcftools reheader -f ~{ref_index} -o reheadered.unsorted.snps.vcf raw.vcf
+		rm raw.vcf
+
+		bcftools view --no-update -v snps -e 'REF=="-"||ALT=="-" || REF=="."||ALT=="."' -Oz -o unsorted.snps.vcf.gz reheadered.unsorted.snps.vcf
+		rm reheadered.unsorted.snps.vcf
+
+		bcftools sort -Oz -o "~{outbase}".snps.vcf.gz unsorted.snps.vcf.gz 
+		rm unsorted.snps.vcf.gz
+
+
+		bcftools index -t "~{outbase}".snps.vcf.gz 
+	>>>
+
+	output {
+		File vcf="~{outbase}.snps.vcf.gz"
+		File vcf_index="~{outbase}.snps.vcf.gz.tbi"
+	}
+
+	runtime {
+			docker: "bschiffthaler/bcftools:latest"
+			preemptible: 0
+			disks: "local-disk " + (4*ceil(size(vcf_in,"GiB"))+20) + " HDD"
+			bootDiskSizeGb: "16"
+			memory: 20 + " GB"
+	}
+
+}
 
 task ReheaderVcf{
 	input {
@@ -90,7 +127,7 @@ task ReheaderVcf{
 	runtime {
 			docker: "broadinstitute/picard:2.26.8"
 			preemptible: 0
-			disks: "local-disk " + ceil(size([vcf,vcf,ref_fasta],"GiB")+20) + " HDD"
+			disks: "local-disk " + (ceil(size([vcf_in,vcf_in,ref_fasta],"GiB"))+20) + " HDD"
 			bootDiskSizeGb: "16"
 			memory: 20 + " GB"
 	}
@@ -99,14 +136,19 @@ task ReheaderVcf{
 workflow ConvertPlinkToVcfWF {
 	call ConvertPlinkToVcf{}
 
-	call ReheaderVcf{
+	call RenameChrXAndSubsetToSNPs{
 		input:
-		vcf_in=ConvertPlinkToVcf.vcf,
-		vcf_index_in=ConvertPlinkToVcf.vcf_index
+			vcf_in = ConvertPlinkToVcf.vcf
 	}
 
+#	call ReheaderVcf{
+#		input:
+#		vcf_in=RenameChrXAndSubsetToSNPs.vcf,
+#		vcf_index_in=RenameChrXAndSubsetToSNPs.vcf_index
+#	}
+
 	output {
-		File vcf=ReheaderVcf.vcf
-		File vcf_index=ReheaderVcf.vcf_index
+		File vcf=RenameChrXAndSubsetToSNPs.vcf
+		File vcf_index=RenameChrXAndSubsetToSNPs.vcf_index
 	}
 }

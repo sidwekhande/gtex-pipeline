@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
 
 # R
 RUN echo "r <- getOption('repos'); r['CRAN'] <- 'http://cran.us.r-project.org'; options(repos = r);" > ~/.Rprofile && \
-    Rscript -e "install.packages(c('argparser', 'devtools'), dependencies=TRUE)" && \
+    Rscript -e "install.packages(c('argparser', 'devtools', 'dplyr', 'foreach'), dependencies=TRUE)" && \
     Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("qvalue"); biocLite("sva"); biocLite("edgeR");'
 
 # htslib
@@ -53,7 +53,7 @@ RUN cd /opt && \
 
 # Python 3
 RUN pip3 install --upgrade pip setuptools
-RUN pip3 install numpy tables pandas scipy scikit-learn matplotlib
+RUN pip3 install numpy tables pandas scipy scikit-learn matplotlib qtl pyarrow
 
 # LeafCutter
 RUN cd /opt && \

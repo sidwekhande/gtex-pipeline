@@ -16,14 +16,12 @@ task leafcutter_cluster {
 		Int disk_space
 		Int num_threads
 		Int num_preempt
-	}
 
+		File? cluster_prepare_fastqtl_override
+	}
+	
 	command <<<
 		set -exuo pipefail
-	#	pip3 install qtl # TODO: add this to the docker image
-
-	#	R -e 'install.packages(c("dplyr","foreach"))' #TODO: add this to docker image
-
 
 		## The files have to be without a period in the part of the name that is not .regtools
 		cat <<- "EOF" > temp.sh
@@ -37,7 +35,7 @@ task leafcutter_cluster {
 		
 		# replicate the part prior to the regtools ending
 		# with a \t separating, and put the results into temp_map.tsv
-		echo "sample\tindividual" > temp_map.tsv
+		printf "sample\tindividual\n" > temp_map.tsv
 		sed 's/\(.*\).regtools_junc.txt.gz/\1\t\1/' file_list.txt >> temp_map.tsv
 		
 		touch "~{prefix}_perind.counts.gz"
@@ -51,10 +49,13 @@ task leafcutter_cluster {
 		touch "~{prefix}.leafcutter.bed.gz.tbi"
 		touch "~{prefix}.leafcutter.PCs.txt"
 
-		python3 /src/cluster_prepare_fastqtl.py \
+		genes_gtf_uncompressed="genes.gtf"
+		gunzip -c ~{genes_gtf} > "${genes_gtf_uncompressed}"
+
+		python3 ~{select_first([cluster_prepare_fastqtl_override, "/src/cluster_prepare_fastqtl.py"])} \
 			"file_list.txt" \
 			"~{exon_list}" \
-			"~{genes_gtf}" \
+			"${genes_gtf_uncompressed}" \
 			"~{prefix}" \
 			"temp_map.tsv" \
 			~{"--min_clu_reads " + min_clu_reads} \
@@ -64,7 +65,7 @@ task leafcutter_cluster {
 	>>>
 
 	runtime {
-		docker: "richardslab/leafcutter:2022-01-18_master"
+		docker: "richardslab/leafcutter:2022-01-20_yf_add_qtl_package_to_docker_image"
 		memory: "~{memory}GB"
 		disks: "local-disk ~{disk_space} HDD"
 		cpu: num_threads
@@ -77,13 +78,11 @@ task leafcutter_cluster {
 		File counts_numbers_filtered="~{prefix}_perind.counts.filtered.gz"
 		File clusters_pooled="~{prefix}_pooled.gz"
 		File clusters_refined="~{prefix}_refined.gz"
-		File clusters_to_genes="~{prefix}.leafcutter.clusters_to_genes.txt"
+#		File clusters_to_genes="~{prefix}.leafcutter.clusters_to_genes.txt"
 		File phenotype_groups="~{prefix}.leafcutter.phenotype_groups.txt"
 		File leafcutter_bed="~{prefix}.leafcutter.bed.gz"
 		File leafcutter_bed_index="~{prefix}.leafcutter.bed.gz.tbi"
 		File leafcutter_pcs="~{prefix}.leafcutter.PCs.txt"
-		File file_list="file_list.txt"
-		File map="temp_map.tsv"
 	}
 
 	meta {
@@ -108,7 +107,7 @@ workflow leafcutter_cluster_workflow {
 		File counts_numbers_filtered=leafcutter_cluster.counts_numbers_filtered
 		File leafcutter_clusters_pooled=leafcutter_cluster.clusters_pooled
 		File leafcutter_clusters_refined=leafcutter_cluster.clusters_refined
-		File leafcutter_clusters_to_genes=leafcutter_cluster.clusters_to_genes
+#		File leafcutter_clusters_to_genes=leafcutter_cluster.clusters_to_genes
 		File leafcutter_phenotype_groups=leafcutter_cluster.phenotype_groups
 		File leafcutter_bed=leafcutter_cluster.leafcutter_bed
 		File leafcutter_bed_index=leafcutter_cluster.leafcutter_bed_index
