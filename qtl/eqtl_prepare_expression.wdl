@@ -35,7 +35,7 @@ task eqtl_prepare_expression {
     >>>
 
     runtime {
-        docker: "richardslab/qtl:2022-02-15_master"
+        docker: "richardslab/qtl:2022-02-15_yf_debug_prepare_eqtl"
         memory: "~{memory}GB"
         disks: "local-disk ~{disk_space} HDD"
         cpu: "~{num_threads}"
