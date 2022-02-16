@@ -8,7 +8,7 @@ workflow CreateSampleParticipantMap{
 		Array[String] participants
 	}
 
-	Array[Array[String]] sample_participant_array =  transpose([samples,participants])
+	Array[Array[String]] sample_participant_array = ["sample", "participant"] + transpose([samples,participants])
 	call wa.write_array_to_tsv {
 		input:
 			array=sample_participant_array
