@@ -49,5 +49,3 @@ workflows:
     subclass: WDL
     primaryDescriptorPath: /qtl/eqtl_prepare_expression.wdl
 
-
-
