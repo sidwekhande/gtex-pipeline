@@ -26,6 +26,7 @@ workflow Kallisto_quant_step2{
     File info = Kallisto_quant.info
     File tsv = Kallisto_quant.tsv
     File h5 = Kallisto_quant.h5
+    
   }
 }
 
@@ -55,10 +56,12 @@ task Kallisto_quant {
     
     kallisto quant -i ~{TranscriptIdx} -o ~{name} -b ~{BootstrapIter} ~{read1} ~{read2} -t 4
   >>>
+  
   output{
     File info = name + "/run_info.json"
     File tsv = name + "/abundance.tsv"
     File h5 = name + "/abundance.h5"
+    
   }
   runtime {
        docker: "jjkrc/kallisto:0.46.1"
