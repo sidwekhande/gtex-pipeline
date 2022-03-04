@@ -9,8 +9,10 @@ task SplitOnPeriodAndTakeFirstPart{
 	}
 	command<<<
 	python <<EOF 
-		string="~{string}"
-		print(string.split('.')[0])
+	
+	string="~{string}"
+	print(string.split('.')[0])
+	
 	EOF
 	>>>
 	output {
