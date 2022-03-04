@@ -48,4 +48,7 @@ workflows:
   - name: PrepareExpressionData
     subclass: WDL
     primaryDescriptorPath: /qtl/eqtl_prepare_expression.wdl
-
+  - name: CreateRNASeqQCSampleName
+    subclass: WDL
+    primaryDescriptorPath: /utils/CreateRNASeqQCSampleName.wdl
+    
