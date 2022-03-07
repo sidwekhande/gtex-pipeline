@@ -1,5 +1,43 @@
 version 1.0
 
+
+task get_num_peers_needed {
+    input {
+        Int num_samples
+    }
+    command <<<
+    python <<EOF
+    # 15 factors for N < 150
+    # 30 factors for 150 ≤ N < 250
+    # 45 factors for 250 ≤ N < 350
+    # 60 factors for N ≥ 350
+    num_samples = ~{num_samples}
+    if num_samples < 150:
+        num_peers = 15
+    else if num_samples < 250:
+        num_peers = 30
+    else if num_samples < 350:
+        num_peers = 45
+    else:
+        num_peers = 60
+
+    print(num_peer)
+
+    EOF
+
+    >>>
+
+    output {
+        Int num_peers=read_int(stdout())
+    }
+
+    runtime {
+        docker: "python:latest"
+        memory: "2GB"
+        disks: "local-disk 15 HDD"
+    }
+}
+
 task qtl_peer_factors {
     input {
         File expression_file
@@ -41,7 +79,27 @@ task qtl_peer_factors {
 }
 
 workflow qtl_peer_factors_workflow {
-    call qtl_peer_factors
+    input {
+        Array[String]? samples_for_count
+        Int? num_peers
+    }
+
+    if (!defined(num_peers)){
+        ## should fail is samples_for_count is missing
+        Array[String] samples_for_count_def = select_first([samples_for_count])
+        
+        call get_num_peers_needed{
+            input:
+                num_samples=length(samples_for_count_def)
+        }
+    }
+
+    call qtl_peer_factors{
+        input:
+            num_peer=select_first([num_peers, get_num_peers_needed.num_peers]),
+            disk_space = 20,
+            memory = 4
+    }
 
 
     output {
