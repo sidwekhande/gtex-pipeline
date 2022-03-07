@@ -51,4 +51,7 @@ workflows:
   - name: CreateRNASeqQCSampleName
     subclass: WDL
     primaryDescriptorPath: /utils/CreateRNASeqQCSampleName.wdl
-    
+  - name: PrepareCovariates
+    subclass: WDL
+    primaryDescriptorPath: /utils/PrepareCovariates.wdl
+        

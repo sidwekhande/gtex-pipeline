@@ -7,10 +7,14 @@ task get_num_peers_needed {
     }
     command <<<
     python <<EOF
+    
+    # From the gtex readme: https://github.com/richardslab/gtex-pipeline/blob/master/qtl/README.md
+
     # 15 factors for N < 150
     # 30 factors for 150 ≤ N < 250
     # 45 factors for 250 ≤ N < 350
     # 60 factors for N ≥ 350
+
     num_samples = ~{num_samples}
     if num_samples < 150:
         num_peers = 15
@@ -70,7 +74,8 @@ task qtl_peer_factors {
     output {
         File combined_covariates="~{prefix}.combined_covariates.txt"
         File PEER_covariates="~{prefix}.PEER_covariates.txt"
-        File alpha="~{prefix}.PEER_alpha.txt"
+        File PEER_residuals="~{prefix}.PEER_residuals.txt"
+        File PEER_alpha="~{prefix}.PEER_alpha.txt"
     }
 
     meta {
@@ -104,6 +109,6 @@ workflow qtl_peer_factors_workflow {
 
     output {
         File combined_covariates=qtl_peer_factors.combined_covariates
-        File alpha=qtl_peer_factors.alpha
+        File alpha=qtl_peer_factors.PEER_alpha
     }
 }
