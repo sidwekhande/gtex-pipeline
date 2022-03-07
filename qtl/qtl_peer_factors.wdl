@@ -31,6 +31,7 @@ task qtl_peer_factors {
 
     output {
         File combined_covariates="~{prefix}.combined_covariates.txt"
+        File PEER_covariates="~{prefix}.PEER_covariates.txt"
         File alpha="~{prefix}.PEER_alpha.txt"
     }
 
