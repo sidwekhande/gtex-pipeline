@@ -17,26 +17,29 @@ task prepare_covariates {
 
 	args <- commandArgs(trailingOnly = TRUE)
 
+	covariate_file <- args[1]
 	sprintf("got the following arguments:")
-	sprintf("args[1] (covariate file): %s",args[1])
+	sprintf("args[1] (covariate file): %s", covariate_file)
 
-	covariate_list=read.delim(args[2])[[1]]
-	sprintf("args[2] (covariate list): %s", covariate_list)
+	covariate_list <- read.delim(args[2])[[1]]
+	sprintf("args[2] (covariate list): %s", paste(collapse=",", covariate_list))
 	
-	individual_list=read.delim(args[3])[[1]]
+	individual_list <- read.delim(args[3])[[1]]
 	
-	sprintf("args[3] (participants list): %s", individual_list)
-	sprintf("args[4] (output filename): %s", args[4])
+	sprintf("args[3] (participants list): %s", paste(collapse=",",individual_list))
+	
+	output_file <- args[4] 
+	sprintf("args[4] (output filename): %s", output_file)
 
 	
-	covariates <- read.delim(args[1],header = TRUE,sep = '\t',row.names = FALSE)
-	covariates <- subset(covariates,select=c(BQCID,covariate_list))
-	covariates <- subset(covariates,BQCID %in% individual_list)
+	covariates <- read.delim(covariate_file, header = TRUE, sep = '\t')
+	covariates <- subset(covariates, select=c(BQCID, covariate_list))
+	covariates <- subset(covariates, BQCID %in% individual_list)
 
 	# make sure that all requested samples are present:
 
 	if(nrow(covariates) != length(individual_list)) {
-		stop(sprintf("got different number of individuals than requested: %d vs. %d", nrow(covariates),length(individual_list))
+		stop(sprintf("Got different number of individuals than requested: %d vs. %d", nrow(covariates), length(individual_list))
 	}
 
 	#prepare for transpose
@@ -46,7 +49,7 @@ task prepare_covariates {
 	rotated <- as.data.frame(rotated)
 	rotated$ID <- rownames(rotated)
 
-	write.table(x = rotated,file=args[4], sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+	write.table(x = rotated,file=output_file, sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
 	EOF
 
