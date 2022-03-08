@@ -18,9 +18,9 @@ task get_num_peers_needed {
     num_samples = ~{num_samples}
     if num_samples < 150:
         num_peers = 15
-    else if num_samples < 250:
+    elif num_samples < 250:
         num_peers = 30
-    else if num_samples < 350:
+    elif num_samples < 350:
         num_peers = 45
     else:
         num_peers = 60
