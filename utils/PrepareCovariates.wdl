@@ -17,16 +17,16 @@ task prepare_covariates {
 
 	args <- commandArgs(trailingOnly = TRUE)
 
-	print("got the following arguments:")
-	print("args[1] (covariate file):"+args[1])
+	sprintf("got the following arguments:")
+	sprintf("args[1] (covariate file): %s",args[1])
 
 	covariate_list=read.delim(args[2])[[1]]
-	print("args[2] (covariate list):"+covariate_list)
+	sprintf("args[2] (covariate list): %s", covariate_list)
 	
 	individual_list=read.delim(args[3])[[1]]
 	
-	print("args[3] (participants list):"+individual_list)
-	print("args[4] (output filename):"+args[4])
+	sprintf("args[3] (participants list): %s", individual_list)
+	sprintf("args[4] (output filename): %s", args[4])
 
 	
 	covariates <- read.delim(args[1],header = TRUE,sep = '\t',row.names = FALSE)
@@ -36,7 +36,7 @@ task prepare_covariates {
 	# make sure that all requested samples are present:
 
 	if(nrow(covariates) != length(individual_list)) {
-		stop("got different number of individuals than requested.")
+		stop(sprintf("got different number of individuals than requested: %d vs. %d", nrow(covariates),length(individual_list))
 	}
 
 	#prepare for transpose
