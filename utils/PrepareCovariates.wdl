@@ -58,7 +58,7 @@ task prepare_covariates {
 	runtime {
 		docker: "r-base:latest"
 		memory: "2GB"
-		disks: "local-disk ~{disk_space} HDD"
+		disks: "local-disk 20 HDD"
 	}
 
 }
