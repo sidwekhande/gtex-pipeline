@@ -12,7 +12,7 @@ task prepare_covariates {
 	File individual_list_file = write_lines(individuals_list)
 
 	command <<<
-	Rscript <<EOF "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" "~{output_file}"
+	Rscript --vanilla -<<EOF "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" "~{output_file}"
 
 
 	args <- commandArgs(trailingOnly = TRUE)
