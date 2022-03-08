@@ -25,7 +25,7 @@ task get_num_peers_needed {
     else:
         num_peers = 60
 
-    print(num_peer)
+    print(num_peers)
 
     EOF
 
