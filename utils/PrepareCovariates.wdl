@@ -1,4 +1,4 @@
-
+version 1.0
 
 task prepare_covariates {
 	input {
