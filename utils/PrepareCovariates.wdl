@@ -29,8 +29,8 @@ task prepare_covariates {
 	sprintf("args[3] (participants list): %s", paste(collapse=",", individual_list))
 	
 	covariates <- read.delim(covariate_file, header = TRUE, sep = '\t')
-	covariates <- subset(covariates, select=c("ID", covariate_list))
-	covariates <- subset(covariates, BQCID %in% individual_list)
+	covariates <- subset(covariates, subset= ID %in% individual_list, select=c("ID", covariate_list))
+	
 
 	# make sure that all requested samples are present:
 
