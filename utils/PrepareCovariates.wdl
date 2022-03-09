@@ -21,19 +21,15 @@ task prepare_covariates {
 	sprintf("got the following arguments:")
 	sprintf("args[1] (covariate file): %s", covariate_file)
 
-	covariate_list <- read.delim(args[2])[[1]]
+	covariate_list <- read.delim(args[2], header=FALSE)[[1]]
 	sprintf("args[2] (covariate list): %s", paste(collapse=",", covariate_list))
 	
-	individual_list <- read.delim(args[3])[[1]]
+	individual_list <- read.delim(args[3], header=FALSE)[[1]]
 	
-	sprintf("args[3] (participants list): %s", paste(collapse=",",individual_list))
-	
-	output_file <- args[4] 
-	sprintf("args[4] (output filename): %s", output_file)
-
+	sprintf("args[3] (participants list): %s", paste(collapse=",", individual_list))
 	
 	covariates <- read.delim(covariate_file, header = TRUE, sep = '\t')
-	covariates <- subset(covariates, select=c(BQCID, covariate_list))
+	covariates <- subset(covariates, select=c("ID", covariate_list))
 	covariates <- subset(covariates, BQCID %in% individual_list)
 
 	# make sure that all requested samples are present:
@@ -49,7 +45,7 @@ task prepare_covariates {
 	rotated <- as.data.frame(rotated)
 	rotated$ID <- rownames(rotated)
 
-	write.table(x = rotated,file=output_file, sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+	write.table(x = rotated,file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
 	EOF
 
