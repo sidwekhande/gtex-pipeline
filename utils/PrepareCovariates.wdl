@@ -45,10 +45,13 @@ task prepare_covariates {
 
 	#prepare for transpose
 	rownames(covariates) <- covariates$BQCID 
-	covariates <- select(covariates,-BQCID)
+	covariates <- subset(covariates,select=-BQCID)
 	rotated <- t(covariates)
 	rotated <- as.data.frame(rotated)
 	rotated$ID <- rownames(rotated)
+	# move ID to the first column
+
+	rotated[,c(ncol(rotated),seq(ncol(rotated)-1))]
 
 	write.table(x = rotated,file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
