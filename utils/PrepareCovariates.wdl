@@ -35,7 +35,7 @@ task prepare_covariates {
 	# make sure that all requested samples are present:
 
 	if(nrow(covariates) != length(individual_list)) {
-		stop(sprintf("Got different number of individuals than requested: %d vs. %d", nrow(covariates), length(individual_list))
+		stop(sprintf("Got different number of individuals than requested: %d vs. %d", nrow(covariates), length(individual_list)))
 	}
 
 	#prepare for transpose
