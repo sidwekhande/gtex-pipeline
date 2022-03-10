@@ -18,18 +18,21 @@ task prepare_covariates {
 	args <- commandArgs(trailingOnly = TRUE)
 
 	covariate_file <- args[1]
-	sprintf("got the following arguments:")
-	sprintf("args[1] (covariate file): %s", covariate_file)
+	cat(sprintf("got the following arguments:"))
+	cat(sprintf("args[1] (covariate file): %s", covariate_file))
 
 	covariate_list <- read.delim(args[2], header=FALSE)[[1]]
-	sprintf("args[2] (covariate list): %s", paste(collapse=",", covariate_list))
+	cat(sprintf("args[2] (covariate list): %s", paste(collapse=",", covariate_list)))
 	
 	individual_list <- read.delim(args[3], header=FALSE)[[1]]
 	
-	sprintf("args[3] (participants list): %s", paste(collapse=",", individual_list))
+	cat(sprintf("args[3] (participants list): %s", paste(collapse=",", individual_list)))
 	
 	covariates <- read.delim(covariate_file, header = TRUE, sep = '\t')
-	covariates <- subset(covariates, subset= ID %in% individual_list, select=c("ID", covariate_list))
+	
+	cat(names(covariates))
+
+	covariates <- subset(covariates, subset = BQCID %in% individual_list, select=c("BQCID", covariate_list))
 	
 
 	# make sure that all requested samples are present:
