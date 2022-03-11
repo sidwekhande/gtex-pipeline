@@ -12,6 +12,8 @@ task prepare_covariates {
 	File individual_list_file = write_lines(individuals_list)
 
 	command <<<
+	# need to quote the heredoc word so that the '$' in the R code don't get misunderstood.
+
 	Rscript --vanilla -<<"EOF" "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" "~{output_file}"
 
 
@@ -47,13 +49,13 @@ task prepare_covariates {
 	
 	# prepare for transpose
 	rownames(covariates) <- covariates$BQCID 
-	covariates <- subset(covariates,select=-BQCID)
+	covariates <- subset(covariates, select=-BQCID)
 	rotated <- t(covariates)
 	rotated <- as.data.frame(rotated)
 	rotated$ID <- rownames(rotated)
 	# move ID to the first column
-	rotated[,c(ncol(rotated),seq(ncol(rotated)-1))]
-	write.table(x = rotated,file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+	rotated[,c(ncol(rotated), seq(ncol(rotated) - 1))]
+	write.table(x = rotated, file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
 	EOF
 
