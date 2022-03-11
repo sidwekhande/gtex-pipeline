@@ -43,16 +43,23 @@ task prepare_covariates {
 			nrow(covariates), length(individual_list), setdiff(individual_list,covariates$BQCID)))
 	}
 
-	#prepare for transpose
+	#debug
+	print(nrow(covariates))
+	print(length(covariates$BQCID))
+	# prepare for transpose
 	rownames(covariates) <- covariates$BQCID 
+	print("1")
 	covariates <- subset(covariates,select=-BQCID)
+	print("2")
 	rotated <- t(covariates)
+	print("3")
 	rotated <- as.data.frame(rotated)
+	print("4")
 	rotated$ID <- rownames(rotated)
 	# move ID to the first column
-
+	print("5")
 	rotated[,c(ncol(rotated),seq(ncol(rotated)-1))]
-
+	print("6")
 	write.table(x = rotated,file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
 	EOF
