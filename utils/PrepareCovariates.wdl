@@ -12,7 +12,7 @@ task prepare_covariates {
 	File individual_list_file = write_lines(individuals_list)
 
 	command <<<
-	Rscript --vanilla -<<EOF "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" "~{output_file}"
+	Rscript --vanilla -<<"EOF" "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" "~{output_file}"
 
 
 	args <- commandArgs(trailingOnly = TRUE)
@@ -44,24 +44,15 @@ task prepare_covariates {
 	}
 
 	#debug
-	print(covariates)
-	print(covariates$BQCID)
-	which(is.na(covariates$BQCID))
-
+	
 	# prepare for transpose
 	rownames(covariates) <- covariates$BQCID 
-	print("1")
 	covariates <- subset(covariates,select=-BQCID)
-	print("2")
 	rotated <- t(covariates)
-	print("3")
 	rotated <- as.data.frame(rotated)
-	print("4")
 	rotated$ID <- rownames(rotated)
 	# move ID to the first column
-	print("5")
 	rotated[,c(ncol(rotated),seq(ncol(rotated)-1))]
-	print("6")
 	write.table(x = rotated,file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
 	EOF
