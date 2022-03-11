@@ -40,12 +40,12 @@ task prepare_covariates {
 
 	if(nrow(covariates) != length(individual_list)) {
 		stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s%n", 
-			nrow(covariates), length(individual_list), setdiff(individual_list,covariates$BQCID)))
+			nrow(covariates), length(individual_list), setdiff(individual_list, covariates$BQCID)))
 	}
 
 	#debug
 	print(covariates)
-	cat(covariates$BQCID)
+	print(covariates$BQCID)
 	which(is.na(covariates$BQCID))
 
 	# prepare for transpose
