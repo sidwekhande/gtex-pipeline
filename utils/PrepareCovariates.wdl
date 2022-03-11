@@ -44,8 +44,10 @@ task prepare_covariates {
 	}
 
 	#debug
-	print(nrow(covariates))
-	print(length(covariates$BQCID))
+	print(covariates)
+	cat(covariates$BQCID)
+	which(is.na(covariates$BQCID))
+
 	# prepare for transpose
 	rownames(covariates) <- covariates$BQCID 
 	print("1")
