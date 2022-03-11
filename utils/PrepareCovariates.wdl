@@ -5,7 +5,6 @@ task prepare_covariates {
 		File covariate_file
 		Array[String] covariate_list
 		Array[String] individuals_list
-		String output_file
 	}
 
 	File covariate_list_file = write_lines(covariate_list)
@@ -14,7 +13,7 @@ task prepare_covariates {
 	command <<<
 	# need to quote the heredoc word so that the '$' in the R code don't get misunderstood.
 
-	Rscript --vanilla -<<"EOF" "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" "~{output_file}"
+	Rscript --vanilla -<<"EOF" "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" 
 
 
 	args <- commandArgs(trailingOnly = TRUE)
@@ -54,14 +53,14 @@ task prepare_covariates {
 	rotated <- as.data.frame(rotated)
 	rotated$ID <- rownames(rotated)
 	# move ID to the first column
-	rotated[,c(ncol(rotated), seq(ncol(rotated) - 1))]
-	write.table(x = rotated, file="extracted_coveriates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+	rotated <- rotated[,c(ncol(rotated), seq(ncol(rotated) - 1))]
+	write.table(x = rotated, file="extracted_covariates.tsv", sep="\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
 
 	EOF
 
 	>>>
 	output {
-		File prepared_covariates = output_file
+		File prepared_covariates = "extracted_covariates.tsv"
 	}
 
 	runtime {
