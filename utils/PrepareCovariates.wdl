@@ -36,10 +36,10 @@ task prepare_covariates {
 
 	requested_columns <- c("BQCID", covariate_list)
 
-	unavailable_columns <- setdiff(names(covariates),requested_columns)
+	unavailable_columns <- setdiff(requested_columns, names(covariates))
 
-	if(length(unavailable_columns)!=0) {
-		sprintf("some requested covariates are unavailable: %s", paste(collapse=",",unavailable_columns))
+	if (length(unavailable_columns)!=0) {
+		sprintf("some requested covariates are unavailable: [%s]", paste(collapse=", ",unavailable_columns))
 	}	
 
 	covariates <- subset(covariates, subset = BQCID %in% individual_list, select=requested_columns)
