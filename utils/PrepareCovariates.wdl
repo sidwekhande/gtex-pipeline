@@ -13,8 +13,7 @@ task prepare_covariates {
 	command <<<
 	# need to quote the heredoc word so that the '$' in the R code don't get misunderstood.
 
-	Rscript --vanilla -<<"EOF" "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" 
-
+	R --vanilla --no-save --file=-<<"EOF" --args "~{covariate_file}" "~{covariate_list_file}" "~{individual_list_file}" 
 
 	args <- commandArgs(trailingOnly = TRUE)
 
@@ -44,21 +43,26 @@ task prepare_covariates {
 
 	covariates <- subset(covariates, subset = BQCID %in% individual_list, select=requested_columns)
 	
-
+	cat("a")
 	# make sure that all requested samples are present:
 
-	if(nrow(covariates) != length(individual_list)) {
+	if (nrow(covariates) != length(individual_list)) {
 		stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s%n", 
 			nrow(covariates), length(individual_list), setdiff(individual_list, covariates$BQCID)))
 	}
 
 	#debug
+	cat("b")
 	
 	# prepare for transpose
 	rownames(covariates) <- covariates$BQCID 
+	cat("c")
 	covariates <- subset(covariates, select=-BQCID)
+	cat("d")
 	rotated <- t(covariates)
+	cat("e")
 	rotated <- as.data.frame(rotated)
+	cat("f")
 	rotated$ID <- rownames(rotated)
 	# move ID to the first column
 	rotated <- rotated[,c(ncol(rotated), seq(ncol(rotated) - 1))]
