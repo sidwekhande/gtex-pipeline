@@ -34,7 +34,15 @@ task prepare_covariates {
 	cat(names(covariates))
 	cat("\n")
 
-	covariates <- subset(covariates, subset = BQCID %in% individual_list, select=c("BQCID", covariate_list))
+	requested_columns <- c("BQCID", covariate_list)
+
+	unavailable_columns <- setdiff(names(covariates),requested_columns)
+
+	if(length(unavailable_columns)!=0) {
+		sprintf("some requested covariates are unavailable: %s", paste(collapse=",",unavailable_columns))
+	}	
+
+	covariates <- subset(covariates, subset = BQCID %in% individual_list, select=requested_columns)
 	
 
 	# make sure that all requested samples are present:
