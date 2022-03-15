@@ -54,4 +54,6 @@ workflows:
   - name: PrepareCovariates
     subclass: WDL
     primaryDescriptorPath: /utils/PrepareCovariates.wdl
-        
+  - name: FastQTL
+    subclass: WDL
+    primaryDescriptorPath: /qtl/fastqtl.wdl
