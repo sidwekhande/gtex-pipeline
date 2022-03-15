@@ -47,8 +47,10 @@ task prepare_covariates {
 	# make sure that all requested samples are present:
 
 	if (nrow(covariates) != length(individual_list)) {
-		stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s%n", 
-			nrow(covariates), length(individual_list), setdiff(individual_list, covariates$BQCID)))
+		cat( paste(collapse=", ", setdiff(individual_list, covariates$BQCID)))
+
+		stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s\n", 
+			nrow(covariates), length(individual_list), paste(collapse=", ",setdiff(individual_list, covariates$BQCID))))
 	}
 
 	#debug
