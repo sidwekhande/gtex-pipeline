@@ -221,7 +221,11 @@ workflow fastqtl_workflow {
             covariates=covariates, 
             cis_window=cis_window,
             ma_sample_threshold=ma_sample_threshold, 
-            maf_threshold=maf_threshold
+            maf_threshold=maf_threshold,
+            memory=10,
+            disk_space=ceil(size(vcf,"GB")+20),
+            num_threads=4,
+            num_preempt=1
     }
 
     scatter(i in range(chunks)) {
@@ -238,7 +242,11 @@ workflow fastqtl_workflow {
                 covariates=covariates, 
                 cis_window=cis_window,
                 ma_sample_threshold=ma_sample_threshold, 
-                maf_threshold=maf_threshold
+                maf_threshold=maf_threshold,
+                memory=10,
+                disk_space=ceil(size(vcf,"GB")+20),
+                num_threads=4,
+                num_preempt=1
         }
     }
 
@@ -246,7 +254,11 @@ workflow fastqtl_workflow {
         input: 
             chunks=fastqtl_permutations_scatter.chunk, 
             logs=fastqtl_permutations_scatter.chunk_log, 
-            prefix=prefix
+            prefix=prefix,
+            memory=10,
+            disk_space=50,
+            num_threads=4,
+            num_preempt=1
         }
 
     call fastqtl_postprocess {
@@ -256,7 +268,11 @@ workflow fastqtl_workflow {
             prefix=prefix, 
             fdr=fdr, 
             annotation_gtf=annotation_gtf, 
-            variant_lookup=variant_lookup
+            variant_lookup=variant_lookup,
+            memory=10,
+            disk_space=50,
+            num_threads=4,
+            num_preempt=1
     }
 
     output {
