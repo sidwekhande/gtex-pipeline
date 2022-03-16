@@ -5,6 +5,7 @@ task prepare_covariates {
 		File covariate_file
 		Array[String] covariate_list
 		Array[String] individuals_list
+		String identifier_column="BQCID"
 	}
 
 	File covariate_list_file = write_lines(covariate_list)
@@ -33,38 +34,32 @@ task prepare_covariates {
 	cat(names(covariates))
 	cat("\n")
 
-	requested_columns <- c("BQCID", covariate_list)
+	requested_columns <- c("~{identifier_column}", covariate_list)
 
 	unavailable_columns <- setdiff(requested_columns, names(covariates))
 
 	if (length(unavailable_columns)!=0) {
-		sprintf("some requested covariates are unavailable: [%s]", paste(collapse=", ",unavailable_columns))
+		sprintf("some requested covariates are unavailable: [%s]", paste(collapse=", ", unavailable_columns))
 	}	
 
-	covariates <- subset(covariates, subset = BQCID %in% individual_list, select=requested_columns)
+	covariates <- subset(covariates, subset = `~{identifier_column}` %in% individual_list, select=requested_columns)
 	
-	cat("a")
 	# make sure that all requested samples are present:
 
 	if (nrow(covariates) != length(individual_list)) {
-		cat( paste(collapse=", ", setdiff(individual_list, covariates$BQCID)))
+		cat( paste(collapse=", ", setdiff(individual_list, covariates$`~{identifier_column}`)))
 
 		stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s\n", 
-			nrow(covariates), length(individual_list), paste(collapse=", ",setdiff(individual_list, covariates$BQCID))))
+			nrow(covariates), length(individual_list), paste(collapse=", ",setdiff(individual_list, covariates$`~{identifier_column}`))))
 	}
 
-	#debug
-	cat("b")
 	
 	# prepare for transpose
-	rownames(covariates) <- covariates$BQCID 
-	cat("c")
-	covariates <- subset(covariates, select=-BQCID)
-	cat("d")
+	rownames(covariates) <- covariates$`~{identifier_column}` 
+	covariates <- subset(covariates, select=-`~{identifier_column}`)
+
 	rotated <- t(covariates)
-	cat("e")
 	rotated <- as.data.frame(rotated)
-	cat("f")
 	rotated$ID <- rownames(rotated)
 	# move ID to the first column
 	rotated <- rotated[,c(ncol(rotated), seq(ncol(rotated) - 1))]
