@@ -36,12 +36,12 @@ task prepare_covariates {
 	cat(sprintf("args[4] (individual list): %s\n", paste(collapse=",", individual_list)))
 
 	if (length(individual_list)==0) {
-	  cat("no individual list provided, using identifier as individual.")
-	  individual_list <- identifier_list
+		cat("no individual list provided, using identifier as individual.")
+		individual_list <- identifier_list
 	}
 
 	if (length(individual_list)!=length(identifier_list)) {
-	  cat(sprintf("lengths of individual and identifier lists mismatch: %d and %d", length(individual_list),length(identifier_list)))
+		cat(sprintf("lengths of individual and identifier lists mismatch: %d and %d", length(individual_list),length(identifier_list)))
 	}
 
 	ids=data.frame(identifier=identifier_list,individual=individual_list)
@@ -64,18 +64,18 @@ task prepare_covariates {
 	# make sure that all requested samples are present:
 
 	if (length(setdiff(individual_list, covariates$individual))>0) {
-	  cat( paste(collapse=", ", setdiff(individual_list, covariates$identifier)))
-	  
-	  stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s\n", 
-	               nrow(covariates), length(individual_list), paste(collapse=", ",setdiff(individual_list, covariates$identifier))))
-	}
+			cat( paste(collapse=", ", setdiff(individual_list, covariates$identifier)))
+		
+			stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s\n", 
+					nrow(covariates), length(individual_list), paste(collapse=", ",setdiff(individual_list, covariates$identifier))))
+		}
 
 	if (any(duplicated(covariates$identifier))){
-	  cat( covariates[which(duplicated(covariates$identifier),"identifier")])
-	  
-	  stop(sprintf("got some row ids more than once: %d", 
-	               paste(collapse=", ", covariates[which(duplicated(covariates$identifier)),"identifier"])))
-	  
+		cat( covariates[which(duplicated(covariates$identifier),"identifier")])
+	
+		stop(sprintf("got some row ids more than once: %d", 
+			paste(collapse=", ", covariates[which(duplicated(covariates$identifier)),"identifier"])))
+	
 	}
 
 
