@@ -11,7 +11,7 @@ task prepare_covariates {
 
 	File covariate_list_file = write_lines(covariate_list)
 	File identifier_list_file = write_lines(identifier_list)
-	File individual_list_file = write_lines(select_first([individual_list,[]])
+	File individual_list_file = write_lines(select_first([individual_list,[]]))
 	
 	command <<<
 	# need to quote the heredoc word so that the '$' in the R code do not get misunderstood.
