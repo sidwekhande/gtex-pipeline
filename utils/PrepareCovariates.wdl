@@ -57,7 +57,7 @@ task prepare_covariates {
 		sprintf("some requested covariates are unavailable: [%s]", paste(collapse=", ", unavailable_columns))
 	}	
 
-	covariates <- subset(merge(y=~{identifier_column},x=ids, by.y="sample",by.x="identifier"),select=c("individual", covariate_list))
+	covariates <- subset(merge(y=covariates,x=ids, by.y="sample",by.x="identifier"),select=c("individual", covariate_list))
 
 	# make sure that all requested samples are present:
 
