@@ -5,7 +5,7 @@ task prepare_covariates {
 		File covariate_file
 		Array[String] covariate_list
 		Array[String] identifier_list
-		String identifier_column="BQCID"
+		String identifier_column="BQCID" #column header in the covariate file that will be matched against the identifier list
 		Array[String]? individual_list
 	}
 
@@ -25,13 +25,13 @@ task prepare_covariates {
 	cat(sprintf("args[1] (covariate file): %s\n", covariate_file))
 
 	covariate_list <- read.delim(args[2], header=FALSE)[[1]]
-	cat(sprintf("args[2] (covariate list): %s\n", paste(collapse=",", covariate_list)))
+	cat(sprintf("args[2] (covariate list): %s\n", paste(collapse=", ", covariate_list)))
 	
 	identifier_list <- read.delim(args[3], header=FALSE)[[1]]
-	cat(sprintf("args[3] (identifier list): %s\n", paste(collapse=",", identifier_list)))
+	cat(sprintf("args[3] (identifier list): %s\n", paste(collapse=", ", identifier_list)))
 
 	individual_list <- read.delim(args[4], header=FALSE)[[1]]
-	cat(sprintf("args[3] (individual list): %s\n", paste(collapse=",", individual_list)))
+	cat(sprintf("args[3] (individual list): %s\n", paste(collapse=", ", individual_list)))
 	
 	if (length(individual_list)==0) {
 		cat("no individual list provided, using identifier as individual.")
@@ -49,23 +49,22 @@ task prepare_covariates {
 	cat(names(covariates))
 	cat("\n")
 
-	#requested_columns <- c( covariate_list)
-
 	unavailable_columns <- setdiff(covariate_list, names(covariates))
 
 	if (length(unavailable_columns)!=0) {
 		sprintf("some requested covariates are unavailable: [%s]", paste(collapse=", ", unavailable_columns))
 	}	
 
-	covariates <- subset(merge(y=covariates,x=ids, by.y="sample",by.x="identifier"),select=c("individual", covariate_list))
+	covariates <- subset(merge(y=covariates,x=ids, by.y="~{identifier_column}",by.x="identifier",all.x=TRUE),select=c("individual","identifier", covariate_list))
+
+	show(covariates)
 
 	# make sure that all requested samples are present:
+	unavailable_identifiers <- setdiff(identifier_list, covariates$identifier)
+	if (length(unavailable_identifiers)>0) {
 
-	if (length(setdiff(individual_list, covariates$individual))>0) {
-			cat( paste(collapse=", ", setdiff(individual_list, covariates$identifier)))
-		
 			stop(sprintf("Got different number of individuals than requested: %d vs. %d.\n Samples requested that were not returned are: %s\n", 
-					nrow(covariates), length(individual_list), paste(collapse=", ",setdiff(individual_list, covariates$identifier))))
+					nrow(covariates), length(individual_list), paste(collapse=", ",unavailable_identifiers)))
 		}
 
 	if (any(duplicated(covariates$identifier))){
@@ -76,10 +75,18 @@ task prepare_covariates {
 	
 	}
 
+	if (any(duplicated(covariates$individual))){
+		cat( covariates[which(duplicated(covariates$individual),"individual")])
+	
+		stop(sprintf("got some individuals more than once: %d", 
+			paste(collapse=", ", covariates[which(duplicated(covariates$individual)),"individual"])))
+	
+	}
+
 
 	# prepare for transpose
 	rownames(covariates) <- covariates$individual 
-	covariates <- subset(covariates, select=-individual)
+	covariates <- subset(covariates, select=c(-individual,-identifier)
 
 	rotated <- t(covariates)
 	rotated <- as.data.frame(rotated)
