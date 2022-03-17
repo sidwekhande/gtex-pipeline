@@ -86,7 +86,7 @@ task prepare_covariates {
 
 	# prepare for transpose
 	rownames(covariates) <- covariates$individual 
-	covariates <- subset(covariates, select=c(-individual,-identifier)
+	covariates <- subset(covariates, select=c(-individual,-identifier))
 
 	rotated <- t(covariates)
 	rotated <- as.data.frame(rotated)
