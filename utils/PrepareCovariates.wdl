@@ -27,14 +27,12 @@ task prepare_covariates {
 	covariate_list <- read.delim(args[2], header=FALSE)[[1]]
 	cat(sprintf("args[2] (covariate list): %s\n", paste(collapse=",", covariate_list)))
 	
-	individual_list <- read.delim(args[3], header=FALSE)[[1]]
-	
-	cat(sprintf("args[3] (participants list): %s\n", paste(collapse=",", individual_list)))
-	
+	identifier_list <- read.delim(args[3], header=FALSE)[[1]]
+	cat(sprintf("args[3] (identifier list): %s\n", paste(collapse=",", identifier_list)))
 
-	individual_list <- c()
-	cat(sprintf("args[4] (individual list): %s\n", paste(collapse=",", individual_list)))
-
+	individual_list <- read.delim(args[4], header=FALSE)[[1]]
+	cat(sprintf("args[3] (individual list): %s\n", paste(collapse=",", individual_list)))
+	
 	if (length(individual_list)==0) {
 		cat("no individual list provided, using identifier as individual.")
 		individual_list <- identifier_list
