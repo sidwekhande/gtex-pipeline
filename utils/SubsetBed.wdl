@@ -9,8 +9,8 @@ task SubsetBed {
 	command<<<
 		set -euxo pipefail
 
-		zless ~{bed} | head -n1 > out.bed
-		zless ~{bed} | tail -n+2 | grep -w -F -f ~{contig_list} >> out.bed 
+		gunzip -c ~{bed} | head -n1 > out.bed
+		gunzip -c ~{bed} | tail -n+2 | grep -w -F -f ~{contig_list} >> out.bed 
 
 		bgzip out.bed
 		tabix -p bed out.bed.gz
