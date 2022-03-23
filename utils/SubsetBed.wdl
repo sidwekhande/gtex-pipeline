@@ -7,7 +7,10 @@ task SubsetBed {
 		File contig_list
 	}
 	command<<<
-		set -euxo pipefail
+#		set -euxo pipefail
+		set -x
+		ls
+		file ~{bed}
 
 		gunzip -c ~{bed} | head -n1 > out.bed
 		gunzip -c ~{bed} | tail -n+2 | grep -w -F -f ~{contig_list} >> out.bed 
@@ -20,7 +23,7 @@ task SubsetBed {
 	runtime {
 		docker: "gcr.io/broad-cga-francois-gtex/gtex_eqtl:V8"	
 		memory: "1GB"
-		disks: "local-disk 10 HDD"
+		disks: "local-disk 20 HDD"
 		cpu: 1
 		preemptible: 1
 	}
