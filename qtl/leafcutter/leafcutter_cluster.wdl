@@ -1,6 +1,7 @@
 version 1.0
 
 import "../../utils/CreateSampleParticipantMap.wdl" as util
+import "../../utils/SubsetBed.wdl" as subset
 
 task get_sample_names_from_junc_files {
 	input {
@@ -122,6 +123,7 @@ workflow leafcutter_cluster_workflow {
 	input {
 		Array[File] junc_files
 		Array[String] identifiers # The identifier in the VCF for each of the samples, in the same order that the junction files are given. 
+		File vcf_chr_list # file containing the names of the contigs to include. Output bedfile will be subset to this.
 	}
 
 	call get_sample_names_from_junc_files{
@@ -145,6 +147,12 @@ workflow leafcutter_cluster_workflow {
 		junc_files=junc_files
 	}
 
+	call subset.SubsetBed as subsetBed{
+		input:
+			bed=leafcutter_cluster.leafcutter_bed,
+			contig_list=vcf_chr_list
+	}
+
 	output {
 		File leafcutter_counts=leafcutter_cluster.counts
 		File leafcutter_counts_numbers=leafcutter_cluster.counts_numbers
@@ -155,6 +163,8 @@ workflow leafcutter_cluster_workflow {
 		File leafcutter_phenotype_groups=leafcutter_cluster.phenotype_groups
 		File leafcutter_bed=leafcutter_cluster.leafcutter_bed
 		File leafcutter_bed_index=leafcutter_cluster.leafcutter_bed_index
+		File leafcutter_subset_bed=subsetBed.out
+		File leafcutter_subset_bed_index=subsetBed.out_index
 		File leafcutter_pcs=leafcutter_cluster.leafcutter_pcs
 	}
 }
