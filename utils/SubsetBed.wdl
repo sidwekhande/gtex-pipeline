@@ -7,13 +7,14 @@ task SubsetBed {
 		File contig_list
 	}
 	command<<<
-		set -euo pipefail
+		set -euxo pipefail
 
 		zcat ~{bed} | head -n1 > out.bed
 		zcat ~{bed} | tail -n+2 | grep -w -F -f ~{contig_list} >> out.bed 
 
 		bgzip out.bed
-		tabix index -p bed out.bed.gz
+		tabix -p bed out.bed.gz
+		ls
 
 	>>>
 	runtime {
