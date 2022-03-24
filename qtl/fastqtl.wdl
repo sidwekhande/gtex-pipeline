@@ -22,6 +22,10 @@ task fastqtl_nominal {
 
     command <<<
         set -euo pipefail
+
+        wget https://raw.githubusercontent.com/broadinstitute/palantir-workflows/main/Scripts/monitoring/cromwell_monitoring_script.sh
+        bash ./cromwell_monitoring_script.sh > monitoring.log &
+
         touch ~{vcf_index}  # avoid tabix "index older than vcf" error
         touch ~{expression_bed_index}
         # nominal pass
@@ -45,6 +49,7 @@ task fastqtl_nominal {
     output {
         File allpairs="~{prefix}.allpairs.txt.gz"
         File allpairs_log="~{prefix}.allpairs.log"
+        File monitoring_log="monitoring.log"
     }
 
     meta {
@@ -223,7 +228,7 @@ workflow fastqtl_workflow {
             ma_sample_threshold=ma_sample_threshold, 
             maf_threshold=maf_threshold,
             memory=10,
-            disk_space=ceil(size(vcf,"GB")+20),
+            disk_space=ceil(3*size(vcf,"GB")+20),
             num_threads=4,
             num_preempt=1
     }
