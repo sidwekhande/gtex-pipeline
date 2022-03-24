@@ -228,7 +228,7 @@ workflow fastqtl_workflow {
             ma_sample_threshold=ma_sample_threshold, 
             maf_threshold=maf_threshold,
             memory=10,
-            disk_space=ceil(3*size(vcf,"GB")+20),
+            disk_space=ceil(3*size(vcf,"GB")+200),
             num_threads=4,
             num_preempt=1
     }
