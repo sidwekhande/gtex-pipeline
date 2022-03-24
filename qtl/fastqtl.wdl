@@ -170,8 +170,12 @@ task fastqtl_postprocess {
     }
     command <<<
         set -euo pipefail
+
+        # it seems that fatqtl_postprocess needs the gtf to be uncompressed...
+        gunzip -c < ~{annotation_gtf} > annotation.gtf 
+
         # post-processing
-        /opt/fastqtl/python/annotate_outputs.py ~{permutations_output} ~{fdr} ~{annotation_gtf} \
+        /opt/fastqtl/python/annotate_outputs.py ~{permutations_output} ~{fdr} annotation.gtf \
         --nominal_results ~{nominal_output} \
         ~{"--snp_lookup " + variant_lookup}
     >>>
