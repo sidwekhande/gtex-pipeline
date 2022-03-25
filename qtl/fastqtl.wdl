@@ -278,8 +278,8 @@ workflow fastqtl_workflow {
             fdr=fdr, 
             annotation_gtf=annotation_gtf, 
             variant_lookup=variant_lookup,
-            memory=10,
-            disk_space=50,
+            memory=20,
+            disk_space=ceil(20+2*(size(fastqtl_permutations_merge.genes,"GB")+size(fastqtl_nominal.allpairs,"GB"))),
             num_threads=4,
             num_preempt=1
     }
