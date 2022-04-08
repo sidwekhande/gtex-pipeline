@@ -80,7 +80,7 @@ task star {
         touch "star_out/~{prefix}.Chimeric.out.sorted.bam.bai"
         touch "star_out/~{prefix}.ReadsPerGene.out.tab"  # run_STAR.py will gzip
 
-        timeout "~{timeout_def}" \ 
+        timeout "~{timeout_def}" \
         /src/run_STAR.py \
             star_index "$fastq1_abs" "$fastq2_abs" "~{prefix}" \
             --output_dir star_out \
