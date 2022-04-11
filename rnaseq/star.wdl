@@ -43,6 +43,10 @@ task star {
     command <<<
         set -euo pipefail
 
+        curl -L -O https://github.com/broadinstitute/palantir-workflows/raw/main/Scripts/monitoring/cromwell_monitoring_script.sh 
+        chmod a+x cromwell_monitoring_script.sh 
+        ./cromwell_monitoring_script.sh &
+
         if [[ ~{fastq1} == *".tar" || ~{fastq1} == *".tar.gz" ]]; then
             tar -xvvf ~{fastq1}
             fastq1_abs=$(for f in *_1.fastq*; do echo "$(pwd)/$f"; done | paste -s -d ',')
