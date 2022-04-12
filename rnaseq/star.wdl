@@ -41,7 +41,7 @@ task star {
         Int num_preempt
         String? timeout
     }
-    String timeout_def = select_first([timeout,"5h"])
+    String timeout_def = select_first([timeout,"7h"])
     command <<<
         set -euo pipefail
 
