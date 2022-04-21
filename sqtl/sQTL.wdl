@@ -27,7 +27,7 @@ workflow sQTLAnalysis{
 			hapMap = hapMap	
 		}
 
-		call id.IdentifySampleWF as identifySample{
+		call id.IdentifySampleWF as identifySample {
 			input:
 			sample=star.bam_file,
 	        sample_index=star.bam_index,
