@@ -1,9 +1,12 @@
-task echo_task {
-	String message
+version 1.0
 
-	command {
-		echo ${message}
+task echo_task {
+	input {
+		String message
 	}
+	command <<<
+		echo ${message}
+	>>>
 
 	runtime { 
 		docker: "broadgdac/firecloud-ubuntu:15.10"
