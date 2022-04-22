@@ -48,11 +48,13 @@ task star {
 
         preemptible=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/scheduling/preemptible" -H "Metadata-Flavor: Google")
 
+        echo "preemptible: $preemptible"
         if [ "$preemptible" = "TRUE" ]; then
             timeout=~{preemptible_timeout}
         else
             timeout=~{timeout_def}
         fi
+
 
         curl -L -O https://github.com/broadinstitute/palantir-workflows/raw/main/Scripts/monitoring/cromwell_monitoring_script.sh 
         chmod a+x cromwell_monitoring_script.sh 

@@ -57,3 +57,7 @@ workflows:
   - name: FastQTL
     subclass: WDL
     primaryDescriptorPath: /qtl/fastqtl.wdl
+  - name: GetCromwellLabels
+    subclass: WDL
+    primaryDescriptorPath: /utils/GetCromwellLabels.wdl
+
