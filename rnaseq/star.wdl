@@ -48,7 +48,7 @@ task star {
 
         preemptible=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/scheduling/preemptible" -H "Metadata-Flavor: Google")
 
-        if [ $preemptible = "TRUE"]; then
+        if [ "$preemptible" = "TRUE" ]; then
             timeout=~{preemptible_timeout}
         else
             timeout=~{timeout_def}
