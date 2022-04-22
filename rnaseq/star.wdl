@@ -42,14 +42,14 @@ task star {
         String? timeout # non preemtible timeout
     }
     String timeout_def = select_first([timeout,"7h"])
-    String preemtible_timeout = "7d" #this is the maximum time for a run anyway
+    String preemptible_timeout = "7d" #this is the maximum time for a run anyway
     command <<<
         set -euo pipefail
 
-        preemtible=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/scheduling/preemptible" -H "Metadata-Flavor: Google")
+        preemptible=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/scheduling/preemptible" -H "Metadata-Flavor: Google")
 
         if [ $preemptible = "TRUE"]; then
-            timeout=~{preemtible_timeout}
+            timeout=~{preemptible_timeout}
         else
             timeout=~{timeout_def}
         fi
