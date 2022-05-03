@@ -14,7 +14,7 @@ task RenameVcfSamples{
 	>>>
 	output {
 		File vcf_out="output.vcf.gz"
-		File vcf_index_out="output.vcf.gz.tbi"
+		File vcf_out_index="output.vcf.gz.tbi"
 	}
 
 	runtime {
@@ -44,4 +44,8 @@ workflow RenameVcfSamplesWF{
 			vcf=vcf_in,
 			rename_by=array.tsv
 	}
+
+	output{ 
+		File vcf_renamed = RenameVcfSamples.vcf_out
+		File vcf_renamed_index = RenameVcfSamples.vcf_out_index}
 }
