@@ -8,7 +8,7 @@ task RenameVcfSamples{
 	}
 	command <<<
 		set -euo pipefail 
-		bcftools reheader -s ~{rename_by}  -o output.vcf.gz 
+		bcftools reheader -s ~{rename_by} -o output.vcf.gz ~{vcf}
 		bcftools index -t output.vcf.gz 
 
 	>>>
