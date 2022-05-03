@@ -22,12 +22,7 @@
 -
 
 ### per QTL : cohort/arm
-- (jointly) PEER factors are calculated via qtl_peer_factors.wdl (expressionQTL_PEERFactors and Splice_QTL_PEERFactors in terra)
+- (jointly) PEER factors are calculated via qtl_peer_factors.wdl (expressionQTL_PEERFactors and spliceQTL_PEERFactors in terra)
 - (jointly) QTLs found via fastqtl.wdl (FastQTL and Splice_FastQTL in Terra)
 
-
-TODO:
-
-- add age at sample as covariate
-
-
+	

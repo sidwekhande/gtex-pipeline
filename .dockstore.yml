@@ -60,4 +60,6 @@ workflows:
   - name: GetCromwellLabels
     subclass: WDL
     primaryDescriptorPath: /utils/GetCromwellLabels.wdl
-
+  - name: RenameVcfSamples
+    subclass: WDL
+    primaryDescriptorPath: /utils/RenameVcfSamples.wdl
