@@ -1,6 +1,6 @@
 version 1.0
 import "write_array.wdl" as wa
-
+import "Error.wdl" as e
 task RenameVcfSamples{
 	input {
 		File vcf
@@ -34,9 +34,17 @@ workflow RenameVcfSamplesWF{
 		Array[String] new_sample_names
 	}
 
+	if(length(samples_in_vcf)!=length(new_sample_names)){
+		call e.Error {
+			input:
+				message="Length of arrays do not match: ~{length(samples_in_vcf)} != ~{length(new_sample_names)}",
+				error=1
+		}
+	}
+	Array[Array[String]] transposed=transpose([samples_in_vcf,new_sample_names])
 	call wa.write_array_to_tsv as array{
 		input:
-			array=[samples_in_vcf,new_sample_names]
+			array=transposed
 	}
 
 	call RenameVcfSamples{
