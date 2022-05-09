@@ -199,7 +199,7 @@ task fastqtl_postprocess {
         gene_dict = {}
         print('['+datetime.now().strftime("%b %d %H:%M:%S")+'] Parsing GTF', flush=True)
         # add: gene_name, gene_chr, gene_start, gene_end, strand
-        with gzip.open(args.annotation_gtf) as gtf:
+        with gzip.open(annotation_gtf,'rt') as gtf:
             for row in gtf:
                 row = row.strip().split('\t')
                 if row[0][0]=='#' or row[2]!='gene': continue
