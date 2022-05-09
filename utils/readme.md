@@ -8,7 +8,7 @@
 ### Expression
 - (per sample) sequencing data is DuplicateMarked and expression evaluated (per sample) by rnaseqc2 in the aligned_rnaseq_bam_to_genecounts.wdl pipeline 
 - (jointly) expression is combined via rnaseqc2_aggregate.wdl (CombineRNASeqc2Files in Terra) 
-- (jointly) expression is normalized via eqtl_prepare_expression.wdl (PrepareExpression in Terra)
+- (jointly) expression is normalized via eqtl_prepare_expression.wdl (PrepareExpressionData in Terra)
 
 
 ### Splicing
