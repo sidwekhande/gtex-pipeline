@@ -374,22 +374,9 @@ workflow fastqtl_workflow {
             num_preempt=1
         }
 
-    call fastqtl_postprocess {
-        input:
-            permutations_output=fastqtl_permutations_merge.genes,
-            nominal_output=fastqtl_nominal.allpairs,
-            prefix=prefix, 
-            fdr=fdr, 
-            annotation_gtf=annotation_gtf, 
-            variant_lookup=variant_lookup,
-            memory=20,
-            disk_space=ceil(20+2*(size(fastqtl_permutations_merge.genes,"GB")+size(fastqtl_nominal.allpairs,"GB"))),
-            num_threads=4,
-            num_preempt=1
-    }
-
     output {
-        File genes_annotated=fastqtl_postprocess.genes_annotated
-        File signifpairs=fastqtl_postprocess.signifpairs
+        File genes_permutation=fastqtl_permutations_merge.genes
+        File genes_nominal=fastqtl_nominal.allpairs
+
    }
 }
