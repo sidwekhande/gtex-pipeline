@@ -24,7 +24,7 @@ task fastqtl_nominal {
         set -euo pipefail
 
         wget https://raw.githubusercontent.com/broadinstitute/palantir-workflows/main/Scripts/monitoring/cromwell_monitoring_script.sh
-        bash ./cromwell_monitoring_script.sh > monitoring.log &
+        bash ./cromwell_monitoring_script.sh | tee monitoring.log &
 
         touch ~{vcf_index}  # avoid tabix "index older than vcf" error
         touch ~{expression_bed_index}
