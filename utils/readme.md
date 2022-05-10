@@ -14,6 +14,7 @@
 ### Splicing
 - (per sample) junctions are discovered and counted via leafcutter_bam_to_junc.wdl which runs on the non-deduped BAM.
 - (jointly) junction files are combined with leafcutter_cluster.wdl (ClusterJunctions in Terra)
+- (jointly) get the junction->gene mapping file with GetGeneId
 
 
 ### Per cohort/arm
@@ -24,5 +25,6 @@
 ### per QTL : cohort/arm
 - (jointly) PEER factors are calculated via qtl_peer_factors.wdl (expressionQTL_PEERFactors and spliceQTL_PEERFactors in terra)
 - (jointly) QTLs found via fastqtl.wdl (FastQTL and Splice_FastQTL in Terra)
+- (jointly) annotate and filter QTLs vis fastqtl_annotate.wdl
 
 	
