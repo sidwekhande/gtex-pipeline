@@ -199,7 +199,7 @@ task fastqtl_postprocess {
         gene_dict = {}
         print('['+datetime.now().strftime("%b %d %H:%M:%S")+'] Parsing GTF', flush=True)
         # add: gene_name, gene_chr, gene_start, gene_end, strand
-        with gzip.open(annotation_gtf,'rt') as gtf:
+        with gzip.open(args.annotation_gtf,'rt') as gtf:
             for row in gtf:
                 row = row.strip().split('\t')
                 if row[0][0]=='#' or row[2]!='gene': continue
@@ -223,7 +223,7 @@ task fastqtl_postprocess {
         if args.snp_lookup:
             print('['+datetime.now().strftime("%b %d %H:%M:%S")+'] Adding variant annotations from lookup table', flush=True)
             # intersect lookup table with variant_ids (col 7 in permutation_results; col 3 in snp_lookup)
-            cmd = "awk 'NR==FNR {v[$7]; next} $3 in v' <(zcat "+args.permutation_results+") <(zcat "+args.snp_lookup+")"
+            cmd = "awk 'NR==FNR {v[$7]; next} $3 in v' <(zcat " + args.permutation_results + ") <(zcat " + args.snp_lookup + ")"
             s = subprocess.check_output(cmd, shell=True, executable='/bin/bash')
             snp_lookup_df = pd.read_csv(io.StringIO(s.decode()), index_col=2, sep='\t',
                 dtype={'chr':str, 'variant_pos':np.int64, 'variant_id':str, 'ref':str, 'alt':str, 'num_alt_per_site':np.int32})
