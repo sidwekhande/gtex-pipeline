@@ -14,7 +14,7 @@ task fastqtl_nominal {
         Float? maf_threshold
         Int chunks
 
-        Int memory
+        Int memory=10
         Int disk_space
         Int num_threads
         Int num_preempt
@@ -231,7 +231,6 @@ workflow fastqtl_workflow {
             cis_window=cis_window,
             ma_sample_threshold=ma_sample_threshold, 
             maf_threshold=maf_threshold,
-            memory=10,
             disk_space=ceil(3*size(vcf,"GB")+200),
             num_threads=4,
             num_preempt=1
