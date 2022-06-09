@@ -68,4 +68,4 @@ workflows:
     primaryDescriptorPath: /utils/RenameVcfSamples.wdl
   - name: FingerprintBam
     subclass: WDL
-    primaryDescriptorPath: /utils/FingerPrintBams.wdl
+    primaryDescriptorPath: /utils/FingerprintBams.wdl
