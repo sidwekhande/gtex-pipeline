@@ -69,3 +69,7 @@ workflows:
   - name: FingerprintBam
     subclass: WDL
     primaryDescriptorPath: /utils/FingerprintBams.wdl
+  - name: AlleleFoldChange
+    subclass: WDL
+    primaryDescriptorPath: /qtl/aFC.wdl
+    
