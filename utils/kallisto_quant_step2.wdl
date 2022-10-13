@@ -5,6 +5,7 @@ workflow Kallisto_quant_step2{
     File TranscriptIdx
     File read1
     File read2
+    File gtf
     String sampleID
     String BootstrapIter
     
@@ -18,6 +19,7 @@ workflow Kallisto_quant_step2{
     read2 = read2,
     name = sampleID,
     BootstrapIter = BootstrapIter,
+    gtf = gtf,
     memoryMaybe = memoryMaybe
 
   }
@@ -26,6 +28,7 @@ workflow Kallisto_quant_step2{
     File info = Kallisto_quant.info
     File tsv = Kallisto_quant.tsv
     File h5 = Kallisto_quant.h5
+    File pseudobam = Kallisto_quant.pseudobam
     
   }
 }
@@ -37,6 +40,7 @@ task Kallisto_quant {
     File read2
     String name
     String BootstrapIter
+    File gtf
     
     Int? memoryMaybe
   }
@@ -54,13 +58,14 @@ task Kallisto_quant {
     chmod a+x cromwell_monitoring_script.sh 
     ./cromwell_monitoring_script.sh &
     
-    kallisto quant -i ~{TranscriptIdx} -o ~{name} -b ~{BootstrapIter} ~{read1} ~{read2} -t 4
+    kallisto quant -i ~{TranscriptIdx} -o ~{name} -b ~{BootstrapIter} ~{read1} ~{read2} -t 4 -g ~{gtf} --genomebam
   >>>
   
   output{
     File info = name + "/run_info.json"
     File tsv = name + "/abundance.tsv"
     File h5 = name + "/abundance.h5"
+    File pseudobam = name + "/pseudoalignments.bam"
     
   }
   runtime {

@@ -1,44 +1,5 @@
 version: 1.2
 workflows:
-  - name: sQTLAnalysis
-    subclass: WDL
-    primaryDescriptorPath: /sqtl/sQTL.wdl
-  - name: CrossCheckSample
-    subclass: WDL
-    primaryDescriptorPath: /utils/Fingerprinting.wdl
-  - name: IdentifySample
-    subclass: WDL
-    primaryDescriptorPath: /utils/IdentifySample.wdl
-  - name: ConvertPlinkToVcf
-    subclass: WDL
-    primaryDescriptorPath: /utils/Plink.wdl
-  - name: LoadPicardMetrics
-    subclass: WDL
-    primaryDescriptorPath: /utils/PicardMetrics.wdl
-  - name: CrosscheckDataWF
-    subclass: WDL
-    primaryDescriptorPath: /utils/CrosscheckData.wdl
-  - name: PrepareAnnotationFiles
-    subclass: WDL
-    primaryDescriptorPath: /utils/CollapseGeneModel.wdl
-  - name: Bam2Junction
-    subclass: WDL
-    primaryDescriptorPath: /qtl/leafcutter/leafcutter_bam_to_junc.wdl
-  - name: ClusterJunctions
-    subclass: WDL
-    primaryDescriptorPath: /qtl/leafcutter/leafcutter_cluster.wdl
-  - name: CreateParticipantSampleSets
-    subclass: WDL
-    primaryDescriptorPath: /utils/CreateParticipantSampleSets.wdl
-  - name: GetString
-    subclass: WDL
-    primaryDescriptorPath: /utils/GetString.wdl
-  - name: KallistoIndexStep1
-    subclass: WDL
-    primaryDescriptorPath: /utils/kallisto_index_step1.wdl
-  - name: Cutadapt
-    subclass: WDL
-    primaryDescriptorPath: /utils/cutadapt.wdl
   - name: KallistoQuant
     subclass: WDL
     primaryDescriptorPath: /utils/kallisto_quant_step2.wdl
