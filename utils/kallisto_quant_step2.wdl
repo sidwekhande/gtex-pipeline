@@ -66,7 +66,6 @@ task Kallisto_quant {
     File tsv = name + "/abundance.tsv"
     File h5 = name + "/abundance.h5"
     File pseudobam = name + "/pseudoalignments.bam"
-    
   }
   runtime {
        docker: "jjkrc/kallisto:0.46.1"
