@@ -8,7 +8,7 @@ workflow Kallisto_quant_step2{
     File gtf
     String sampleID
     String BootstrapIter
-    
+    Int disk_size
     Int? memoryMaybe
   }
   
@@ -20,6 +20,7 @@ workflow Kallisto_quant_step2{
     name = sampleID,
     BootstrapIter = BootstrapIter,
     gtf = gtf,
+    disk_size = disk_size,
     memoryMaybe = memoryMaybe
 
   }
@@ -41,7 +42,7 @@ task Kallisto_quant {
     String name
     String BootstrapIter
     File gtf
-    
+    Int disk_size = 60 
     Int? memoryMaybe
   }
 
@@ -49,7 +50,6 @@ task Kallisto_quant {
   Int memoryDefault=1
   Int memoryJava=select_first([memoryMaybe,memoryDefault])
   Int memoryRam=memoryJava+2
-  Int disk_size = 50 + ceil(size([read1, read2, TranscriptIdx], "GB"))
 
   command <<<
     set -xeuo pipefail 
@@ -71,6 +71,6 @@ task Kallisto_quant {
        docker: "jjkrc/kallisto:0.46.1"
        memory: memoryRam + " GB"
        cpu: 4
-       disks: "local-disk " + disk_size + " HDD"
+       disks: "local-disk " + disk_size + "GB HDD"
   }
 }
