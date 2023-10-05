@@ -71,6 +71,6 @@ task Kallisto_quant {
        docker: "jjkrc/kallisto:0.46.1"
        memory: memoryRam + " GB"
        cpu: 4
-       disks: "local-disk " + disk_size + "GB HDD"
+       disks: "local-disk " + disk_size + " HDD"
   }
 }
